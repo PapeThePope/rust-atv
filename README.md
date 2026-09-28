@@ -1,6 +1,8 @@
-# pyatv-rs
+# rust-atv
 
-A pure-Rust library and CLI for discovering, pairing with, and controlling Apple TV and AirPlay-compatible devices — a reimplementation of [pyatv](https://github.com/postlund/pyatv) targeting Rust 2024.
+A pure-Rust library and CLI for discovering, pairing with, and controlling Apple TV and AirPlay-compatible devices. This is a maintained fork of [pyatv-rs](https://github.com/SkrOYC/pyatv-rs), which ports [pyatv](https://github.com/postlund/pyatv) to Rust 2024. Both upstream projects retain credit through the repository history and MIT license.
+
+The GPUI prototype from the upstream workspace has been removed. The protocol library and command-line client remain separate; a terminal interface can depend on the library without adding UI dependencies to it.
 
 It is a **controller**, not a receiver: it drives an Apple TV, HomePod or AirPlay speaker the way a remote does. It does not accept incoming streams, does not do screen mirroring, and does not implement FairPlay DRM. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) §1 for the full goals and non-goals.
 
@@ -17,7 +19,7 @@ Prior art from GPL/LGPL projects (owntone, UxPlay, shairport-sync, rairplay) was
 
 ## Status
 
-Every planned protocol and the pyatv-compatible CLI surface are implemented, and the full quality gate is green. The project has not been published to crates.io and has no tagged release.
+The implementation and test results described below are inherited from pyatv-rs at commit `7a56263`. This fork has not yet been tested against a local Apple TV. It has not been published to crates.io and has no tagged release. See the [source-level parity audit](docs/PARITY.md) for confirmed differences from Python pyatv.
 
 The live validation used one Apple TV 4K (3rd generation) running tvOS 27. _Hermetic_ means that socket-level tests and pyatv-generated known-answer tests cover the path, but representative hardware has not exercised it. For the full probe record, see the [live parity validation report](docs/research/live-parity-validation-2026-08-25.md).
 
@@ -32,7 +34,7 @@ The live validation used one Apple TV 4K (3rd generation) running tvOS 27. _Herm
 | AirPlay `play_url` | Live-probed — tvOS accepts `/play`, then returns `500 Internal Server Error` to `/playback-info`; pyatv reports the same tvOS 26+ failure |
 | RAOP audio streaming (`stream_file`) | Live-probed — Rust and pyatv 0.18.0 both time out at the AirPlay 2 audio-stream `SETUP` on this tvOS build |
 | Legacy DMAP (Apple TV gen 1–3) | Hermetic only — no such device available to test against |
-| Facade relaying, CLI parity, `--json` | Complete |
+| Facade relaying, broad CLI coverage, `--json` | Implemented; remaining differences are listed in the parity audit |
 
 Known limitations on the tested tvOS build, from the risk register:
 
@@ -264,6 +266,7 @@ Branch names follow `type/description`. Commit messages and PR bodies should exp
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — design decisions and rationale: the facade/relayer model, crate decomposition, sans-io cores, why not `reqwest`/`hyper`, testing strategy.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — the phased plan and per-step delivery status.
 - [`docs/RISKS.md`](docs/RISKS.md) — the risk register, including every known live-hardware finding.
+- [`docs/PARITY.md`](docs/PARITY.md) — confirmed source-level differences from Python pyatv and remaining hardware coverage gaps.
 - [`docs/research/README.md`](docs/research/README.md) — the indexed research corpus: seventeen wire-level and ecosystem deep-dives that are the ground truth for every protocol here.
 - `CLAUDE.md` — the working guide for contributors and autonomous agents.
 
@@ -273,4 +276,4 @@ MIT. See [`LICENSE`](LICENSE). This matches pyatv, from which this project is po
 
 ## Acknowledgements
 
-This project stands on the reverse-engineering work of [pyatv](https://github.com/postlund/pyatv) and its maintainer Pierre Ståhl, and on the broader open AirPlay/HomeKit community. It is not affiliated with, authorized by, or endorsed by Apple. Apple TV, AirPlay, HomePod and HomeKit are trademarks of Apple Inc.
+This fork builds on [pyatv-rs](https://github.com/SkrOYC/pyatv-rs) by SkrOYC, which in turn builds on the reverse-engineering work of [pyatv](https://github.com/postlund/pyatv) and its maintainer Pierre Ståhl, and on the broader open AirPlay/HomeKit community. It is not affiliated with, authorized by, or endorsed by Apple. Apple TV, AirPlay, HomePod and HomeKit are trademarks of Apple Inc.

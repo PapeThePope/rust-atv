@@ -1,13 +1,13 @@
 [workspace]
 resolver = "3"
-members = ["crates/*", "cli/atvremote", "gui/atvremote-gui"]
+members = ["crates/*", "cli/atvremote"]
 
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.88"
 license = "MIT"
-repository = "https://github.com/SkrOYC/pyatv-rs"
+repository = "https://github.com/PapeThePope/rust-atv"
 authors = ["SkrOYC"]
 
 [workspace.dependencies]
@@ -37,9 +37,6 @@ tokio = { version = "1.53.1", features = [
   "io-util",
 ] }
 tracing = "0.1.44"
-gpui = { git = "https://github.com/zed-industries/zed", rev = "ced90fc636c4ede05402befc38a63bae7fd741bd" }
-gpui_platform = { git = "https://github.com/zed-industries/zed", rev = "ced90fc636c4ede05402befc38a63bae7fd741bd" }
-gpui_tokio = { git = "https://github.com/zed-industries/zed", rev = "ced90fc636c4ede05402befc38a63bae7fd741bd" }
 
 [profile.bench]
 # Line tables in the benchmark binaries. A criterion number tells you *that* something got slower;
